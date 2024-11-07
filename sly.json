@@ -1,0 +1,17 @@
+{
+	"$schema": "https://sly-cli.fly.dev/registry/config.json",
+	"libraries": [
+		{
+			"name": "remixicon",
+			"directory": "./app/components/svg-icons/rm/",
+			"postinstall": ["pnpm", "build:icons"],
+			"transformers": []
+		},
+		{
+			"name": "@radix-ui/icons",
+			"directory": "./app/components/svg-icons/rd/",
+			"postinstall": ["pnpm", "build:icons"],
+			"transformers": []
+		}
+	]
+}

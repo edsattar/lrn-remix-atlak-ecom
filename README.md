@@ -107,6 +107,22 @@ pnpm add -D @commitlint/config-conventional @commitlint/cli \
 && echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js;
 && pnpm add -D husky; pnpm exec husky init \
 && echo "npx --no-install commitlint --edit \"$1\"" > .husky/commit-msg;
-&& echo "pnpx oxlint@latest" > .husky/pre-commit;
+&& echo "npx oxlint@latest" > .husky/pre-commit;
 && echo "pnpm latest" > .husky/post-merge
+```
+
+### Icons and Components with SLY
+
+[reference](https://sly-cli.fly.dev/) 
+
+interactive
+
+```bash
+npx @sly-cli/sly add 
+```
+
+non-interactive
+
+```bash
+npx @sly-cli/sly add @radix-ui/icons eraser --directory ./icons --overwrite --yes
 ```
