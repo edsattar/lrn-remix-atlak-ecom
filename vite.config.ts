@@ -7,7 +7,9 @@ import { flatRoutes } from "remix-flat-routes";
 
 export default defineConfig({
   plugins: [
-    remixDevTools(),
+    remixDevTools({
+      pluginDir: "./.devtools/plugins",
+    }),
     remix({
       ignoredRouteFiles: ["**/*.css"],
       routes: (defineRoutes) => flatRoutes("routes", defineRoutes),
