@@ -1,5 +1,5 @@
-import { existsSync, promises as fs } from "fs";
-import path from "path";
+import { existsSync, promises as fs } from "node:fs";
+import path from "node:path";
 
 import { glob } from "glob";
 import { parse } from "node-html-parser";
@@ -10,7 +10,7 @@ const inputDir = path.join(cwd, "resources", "svg-icons");
 const inputDirRelative = path.relative(cwd, inputDir);
 
 const outputDir = path.join(cwd, "app", "components", "icons");
-const outputDirRelative = path.relative(cwd, outputDir);
+// const outputDirRelative = path.relative(cwd, outputDir);
 
 // Find all SVG files in the input directory and sort them alphabetically
 const files = glob
