@@ -10,77 +10,83 @@ import { createInstance } from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import Backend from "i18next-fs-backend";
 import i18next from "./localization/i18next.server";
-import i18n from "./localization/i18n";
+import { config, isSupportedLanguage } from "./localization/i18n";
 
 const ABORT_DELAY = 5_000;
 
 export default async function handleRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  remixContext: EntryContext,
+	request: Request,
+	responseStatusCode: number,
+	responseHeaders: Headers,
+	remixContext: EntryContext,
 ) {
-  const instance = createInstance();
-  const lng = await i18next.getLocale(request);
-  const ns = i18next.getRouteNamespaces(remixContext);
+	const url = new URL(request.url);
+	const { pathname } = url;
+	const lang = pathname.split("/")[1];
 
-  await instance
-    .use(initReactI18next) // Tell our instance to use react-i18next
-    .use(Backend) // Setup our backend
-    .init({
-      ...i18n,
-      lng,
-      ns,
-      // backend: { loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json") },
-    });
+	const lng = isSupportedLanguage(lang)
+		? lang
+		: await i18next.getLocale(request);
+	const ns = i18next.getRouteNamespaces(remixContext);
 
-  let callbackName =
-    isbot(request.headers.get("user-agent")) || remixContext.isSpaMode
-      ? "onAllReady"
-      : "onShellReady";
+	const instance = createInstance();
+	await instance
+		.use(initReactI18next) // Tell our instance to use react-i18next
+		.use(Backend) // Setup our backend
+		.init({
+			...config,
+			lng,
+			ns,
+			// backend: { loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json") },
+		});
 
-  return new Promise((resolve, reject) => {
-    let shellRendered = false;
-    const { pipe, abort } = renderToPipeableStream(
-      <I18nextProvider i18n={instance}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
-      </I18nextProvider>,
-      {
-        [callbackName]: () => {
-          shellRendered = true;
-          const body = new PassThrough();
-          const stream = createReadableStreamFromReadable(body);
+	let callbackName =
+		isbot(request.headers.get("user-agent")) || remixContext.isSpaMode
+			? "onAllReady"
+			: "onShellReady";
 
-          responseHeaders.set("Content-Type", "text/html");
+	return new Promise((resolve, reject) => {
+		let shellRendered = false;
+		const { pipe, abort } = renderToPipeableStream(
+			<I18nextProvider i18n={instance}>
+				<RemixServer
+					context={remixContext}
+					url={request.url}
+					abortDelay={ABORT_DELAY}
+				/>
+			</I18nextProvider>,
+			{
+				[callbackName]: () => {
+					shellRendered = true;
+					const body = new PassThrough();
+					const stream = createReadableStreamFromReadable(body);
 
-          resolve(
-            new Response(stream, {
-              headers: responseHeaders,
-              status: responseStatusCode,
-            }),
-          );
+					responseHeaders.set("Content-Type", "text/html");
 
-          pipe(body);
-        },
-        onShellError(error: unknown) {
-          reject(error);
-        },
-        onError(error: unknown) {
-          responseStatusCode = 500;
-          // Log streaming rendering errors from inside the shell.  Don't log
-          // errors encountered during initial shell rendering since they'll
-          // reject and get logged in handleDocumentRequest.
-          if (shellRendered) {
-            console.error(error);
-          }
-        },
-      },
-    );
+					resolve(
+						new Response(stream, {
+							headers: responseHeaders,
+							status: responseStatusCode,
+						}),
+					);
 
-    setTimeout(abort, ABORT_DELAY);
-  });
+					pipe(body);
+				},
+				onShellError(error: unknown) {
+					reject(error);
+				},
+				onError(error: unknown) {
+					responseStatusCode = 500;
+					// Log streaming rendering errors from inside the shell.  Don't log
+					// errors encountered during initial shell rendering since they'll
+					// reject and get logged in handleDocumentRequest.
+					if (shellRendered) {
+						console.error(error);
+					}
+				},
+			},
+		);
+
+		setTimeout(abort, ABORT_DELAY);
+	});
 }

@@ -11,6 +11,7 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import { useChangeLanguage } from "remix-i18next/react";
 import { useTranslation } from "react-i18next";
+import { isSupportedLanguage } from "./localization/i18n";
 
 import "./tailwind.css";
 import i18next from "./localization/i18next.server";
@@ -36,21 +37,25 @@ export const links: LinksFunction = () => [
 	// { rel: "preload", href: iconHref, as: "image", type: "image/svg+xml" },
 ];
 
-export const handle = { i18n: "common" };
+export async function loader({ request, params }: LoaderFunctionArgs) {
+	if (!params.lang) return json({ lang: "en" });
 
-export async function loader({ request }: LoaderFunctionArgs) {
-	const locale = await i18next.getLocale(request);
-	return json({ locale });
+	const lang = isSupportedLanguage(params.lang)
+		? params.lang
+		: await i18next.getLocale(request);
+
+	return json({ lang });
 }
 
+export const handle = { i18n: "common" };
 
 export default function App() {
-	const { locale } = useLoaderData<typeof loader>();
+	const { lang } = useLoaderData<typeof loader>();
 	const { i18n } = useTranslation();
-	useChangeLanguage(locale);
+	useChangeLanguage(lang);
 
 	return (
-		<html lang={locale} dir={i18n.dir()}>
+		<html lang={lang} dir={i18n.dir()}>
 			<head>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -58,6 +63,7 @@ export default function App() {
 				<Links />
 			</head>
 			<body>
+				<h1>Lang {lang}</h1>
 				<Outlet />
 				<ScrollRestoration />
 				<Scripts />

@@ -260,3 +260,20 @@ add sly.json
 	]
 }
 ```
+
+### DB
+
+create Turso db
+
+create env
+
+```bash
+TURSO_DB_URL=...
+TURSO_DB_TOKEN=...
+```
+add drizzle-orm
+```bash
+npm i drizzle-orm @libsql/client dotenv
+npm i -D drizzle-kit tsx 
+```
+

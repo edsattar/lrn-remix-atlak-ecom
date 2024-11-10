@@ -1,12 +1,25 @@
-import { resources, supportedLngs } from "./resource";
+import locales from "./locales";
 
-export default {
-	// This is the list of languages your application supports
+const languages = Object.keys(locales);
+export const supportedLngs = [...languages];
+type Language = (typeof languages)[number];
+
+export const isSupportedLanguage = (lang: string) => {
+	return supportedLngs.includes(lang as any);
+};
+
+type Resource = {
+	translation: typeof locales.en;
+};
+
+const resources: Record<Language, Resource> = {
+	en: { translation: locales.en },
+	es: { translation: locales.es },
+};
+
+export const config = {
 	supportedLngs,
-	// This is the language you want to use in case
-	// if the user language is not in the supportedLngs
 	fallbackLng: "en",
-	// The default namespace of i18next is "translation", but you can customize it here
 	defaultNS: "translation",
 	resources,
 };

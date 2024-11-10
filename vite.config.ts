@@ -8,7 +8,9 @@ export default defineConfig({
 	plugins: [
 		remix({
 			ignoredRouteFiles: ["**/*"], // to prevent default remix convention from picking up routes
-			routes: async (defineRoutes) => flatRoutes("routes", defineRoutes),
+			routes: async (defineRoutes) => {
+				return flatRoutes("routes", defineRoutes);
+			},
 		}),
 		tsconfigPaths(),
 	],
