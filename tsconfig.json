@@ -24,6 +24,6 @@
 		"skipLibCheck": true,
 		"strict": true,
 		"target": "ES2022",
-		"types": ["@remix-run/node", "vite/client"]
+		"types": ["@remix-run/node", "vite/client", "vitest/globals"]
 	}
 }

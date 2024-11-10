@@ -273,7 +273,14 @@ TURSO_DB_TOKEN=...
 ```
 add drizzle-orm
 ```bash
-npm i drizzle-orm @libsql/client dotenv
-npm i -D drizzle-kit tsx 
+pnpm i drizzle-orm @libsql/client dotenv
+pnpm i -D drizzle-kit tsx 
+```
+
+### testing
+
+```bash
+pnpm i -D vitest
+pnpm i -D @faker-js/faker
 ```
 
