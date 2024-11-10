@@ -36,12 +36,13 @@ export const links: LinksFunction = () => [
 	// { rel: "preload", href: iconHref, as: "image", type: "image/svg+xml" },
 ];
 
+export const handle = { i18n: "common" };
+
 export async function loader({ request }: LoaderFunctionArgs) {
 	const locale = await i18next.getLocale(request);
 	return json({ locale });
 }
 
-export const handle = { i18n: "common" };
 
 export default function App() {
 	const { locale } = useLoaderData<typeof loader>();
