@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient, Client } from "@libsql/client";
-import * as schema from "./schema";
+import * as auth from "./schema/auth";
 // import { loadEnvConfig } from "@next/env";
 // loadEnvConfig(process.cwd());
 
@@ -19,4 +19,6 @@ if (process.env.NODE_ENV !== "production")
     url: process.env.DB_URL!,
     authToken: process.env.DB_AUTH,
   });
-export const db = drizzle(client, { schema });
+
+// schema in multiple files, reference: https://orm.drizzle.team/docs/rqb#querying
+export const db = drizzle({ client, schema: { ...auth } });

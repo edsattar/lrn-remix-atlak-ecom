@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 import { flatRoutes } from "remix-flat-routes";
+// import { configDefaults } from "vitest/config.js";
 
 export default defineConfig({
 	plugins: [
@@ -16,12 +17,13 @@ export default defineConfig({
 		tsconfigPaths(),
 	],
 	server: { port: 3000 },
-  test: {
-    name: "unit",
-    globals: true,
-    environment: "happy-dom",
-    setupFiles: ["./tests/setup.unit.ts"],
-    include: ["./app/**/*.test.{ts, tsx}"],
-    exclude: ["./app/**/integration/*.test.{ts, tsx}"],
-  }
+	test: {
+		// ...configDefaults,
+		// name: "unit",
+		// globals: true,
+		// environment: "happy-dom",
+		// setupFiles: ["./tests/setup.unit.ts"],
+		include: ["./app/**/*.test.{ts, tsx}"],
+		// exclude: ["./app/**/integration/*.test.{ts, tsx}"],
+	},
 });

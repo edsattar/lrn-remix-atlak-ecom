@@ -1,3 +1,4 @@
 node_modules
 .tut
 .env
+.env.test
