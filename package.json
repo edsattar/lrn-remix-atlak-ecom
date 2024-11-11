@@ -10,9 +10,9 @@
 		"start": "remix-serve build/server/index.js",
 		"lint": "npx oxlint@latest",
 		"build:icons": "bun run scripts/build-icons.ts",
-		"test": "vitest",
-		"push": "drizzle-kit push",
-		"studio": "drizzle-kit studio"
+		"db:push": "drizzle-kit push --strict --verbose",
+		"db:studio": "drizzle-kit studio",
+		"test": "./scripts/vitest-script.sh"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",

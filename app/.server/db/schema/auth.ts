@@ -12,6 +12,9 @@ export const user = sqliteTable("user", {
     .notNull(),
 });
 
+export type UserSelect = typeof user.$inferSelect;
+export type UserInsert = typeof user.$inferInsert;
+
 // export const sessions = sqliteTable("sessions", {
 //   id: text("id").primaryKey(),
 //   userId: text("userId")
