@@ -12,9 +12,10 @@ import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useChangeLanguage } from "remix-i18next/react";
 import { useTranslation } from "react-i18next";
 import { isSupportedLanguage } from "./localization/i18n";
-
-import "./tailwind.css";
 import i18next from "./localization/i18next.server";
+
+import spriteHref from "./assets/icons/sprite.svg?url";
+import "./tailwind.css";
 
 const fonts = {
 	inter: "family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900",
@@ -34,7 +35,7 @@ export const links: LinksFunction = () => [
 		rel: "stylesheet",
 		href: `https://fonts.googleapis.com/css2?${Object.values(fonts).join("&")}&display=swap`,
 	},
-	// { rel: "preload", href: iconHref, as: "image", type: "image/svg+xml" },
+	{ rel: "preload", href: spriteHref, as: "image", type: "image/svg+xml" },
 ];
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
