@@ -9,7 +9,7 @@ const cwd = process.cwd();
 const inputDir = path.join(cwd, "resources", "svg-icons");
 const inputDirRelative = path.relative(cwd, inputDir);
 
-const outputDir = path.join(cwd, "app", "assets", "icons");
+const outputDir = path.join(cwd, "app", "components", "icons");
 // const outputDirRelative = path.relative(cwd, outputDir);
 
 // Find all SVG files in the input directory and sort them alphabetically

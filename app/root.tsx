@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { isSupportedLanguage } from "./localization/i18n";
 import i18next from "./localization/i18next.server";
 
-import spriteHref from "./assets/icons/sprite.svg?url";
+import spriteHref from "~/components/icons/sprite.svg?url";
 import "./tailwind.css";
 
 const fonts = {
