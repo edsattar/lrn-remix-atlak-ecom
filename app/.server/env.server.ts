@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { z } from "zod";
 
 const envSchema = z.object({
@@ -14,16 +15,13 @@ let env: ReturnType<typeof initEnv>;
 export const initEnv = () => {
   const envData = envSchema.safeParse(process.env);
   if (!envData.success) {
-    console.error(
-      "❌ Invalid environment variables:",
-      envData.error.flatten().fieldErrors
-    );
-
-    throw new Error("Invalid environment variables");
+    const flatErrMsg = JSON.stringify(envData.error.flatten().fieldErrors);
+    throw new Error(`Invalid environment variables ${flatErrMsg}`);
   }
   env = envData.data;
 
-  console.log("✅ Environment variables loaded successfully");
+  console.log(chalk.green("Environment variables verified from .server/env.server.ts"));
+
   return envData.data;
 };
 
@@ -40,9 +38,6 @@ export type CLIENT_ENV = ReturnType<typeof getClientEnv>;
 type APP_ENV = z.infer<typeof envSchema>;
 
 declare global {
-  interface Window {
-    env: CLIENT_ENV;
-  }
   namespace NodeJS {
     interface ProcessEnv extends APP_ENV {}
   }

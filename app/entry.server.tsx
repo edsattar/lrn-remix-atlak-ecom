@@ -11,8 +11,13 @@ import { I18nextProvider, initReactI18next } from "react-i18next";
 import Backend from "i18next-fs-backend";
 import i18next from "./localization/i18next.server";
 import { config, isSupportedLanguage } from "./localization/i18n";
+import { initEnv } from "~/.server/env.server";
 
 const ABORT_DELAY = 5_000;
+
+// Initialize environment variables
+initEnv();
+// const env = initEnv();
 
 export default async function handleRequest(
 	request: Request,
