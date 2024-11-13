@@ -13,6 +13,10 @@ import i18next from "./localization/i18next.server";
 import { config, isSupportedLanguage } from "./localization/i18n";
 import { initEnv } from "~/.server/env.server";
 
+import { createHonoServer } from "react-router-hono-server/node";
+
+export const server = await createHonoServer();
+
 const ABORT_DELAY = 5_000;
 
 // Initialize environment variables

@@ -5,9 +5,9 @@
 	"type": "module",
 	"keywords": [],
 	"scripts": {
-		"dev": "remix vite:dev",
-		"build": "remix vite:build",
-		"start": "remix-serve build/server/index.js",
+    "build": "NODE_ENV=production remix vite:build",
+    "dev": "vite --host",
+    "start": "NODE_ENV=production node ./build/server/index.js",
 		"lint": "npx oxlint@latest",
 		"build:icons": "bun run scripts/build-icons.ts",
 		"db:push": "drizzle-kit push --strict --verbose",
@@ -29,6 +29,7 @@
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-i18next": "^15.1.0",
+		"react-router-hono-server": "^1.1.0",
 		"remix-i18next": "^6.4.1",
 		"zod": "^3.23.8"
 	},
